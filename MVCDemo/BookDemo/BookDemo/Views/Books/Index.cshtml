@@ -1,0 +1,93 @@
+﻿@model IEnumerable<BookDemo.Models.Book>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@Html.ActionLink("Create New", "Create")
+
+@using (Ajax.BeginForm(
+    "_BookSearch",
+    "Books",
+    new AjaxOptions
+    {
+        InsertionMode = InsertionMode.InsertAfter,
+        HttpMethod = "Get",
+        LoadingElementId = "ajax-loader",
+        UpdateTargetId = "searchResults",
+    }))
+{
+    <input type="text" name="query" />
+    <input type="submit" name="Find Title" />
+    <img id="ajax-loader" name="~/Content/Images/ajax-loader.gif" style="display:none" />
+}
+<p id="searchResults">
+
+    @*@using (Html.BeginForm())
+        {
+            <div>
+                Genre: @Html.DropDownList("bookGenre", "ALL")
+                Name: @Html.TextBox("SearchString") <br />
+                <input type="submit" value="Filter" />
+            </div>
+        }*@
+
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PubDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PubDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+
+
+    }
+
+</table>
+
+<div id="bargainBook">
+    @Ajax.ActionLink("Click here for the Bargain Book!","BargainBook","Books",
+   new AjaxOptions
+   {
+       UpdateTargetId= "bargainBook",
+       InsertionMode=InsertionMode.Replace,
+       HttpMethod="Get"
+   })
+</div>
+
